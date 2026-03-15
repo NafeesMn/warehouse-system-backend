@@ -1,16 +1,27 @@
 package com.artiselite.warehouse.product.service;
 
-import com.artiselite.warehouse.product.dto.ProductRequest;
-import com.artiselite.warehouse.product.dto.ProductResponse;
-import java.util.List;
+import com.artiselite.warehouse.common.api.PagedResponse;
+import com.artiselite.warehouse.product.dto.request.CreateProductRequest;
+import com.artiselite.warehouse.product.dto.request.UpdateProductRequest;
+import com.artiselite.warehouse.product.dto.response.ProductListItemResponse;
+import com.artiselite.warehouse.product.dto.response.ProductResponse;
 
 public interface ProductService {
 
-    List<ProductResponse> getAllProducts();
+    ProductResponse createProduct(CreateProductRequest request);
+
+    PagedResponse<ProductListItemResponse> getProducts(int page, int size, String sortBy, String sortDirection);
 
     ProductResponse getProductById(Long productId);
 
-    ProductResponse createProduct(ProductRequest request);
+    ProductResponse updateProduct(Long productId, UpdateProductRequest request);
 
-    ProductResponse updateProduct(Long productId, ProductRequest request);
+    PagedResponse<ProductListItemResponse> searchProducts(
+            String keyword,
+            String tag,
+            int page,
+            int size,
+            String sortBy,
+            String sortDirection
+    );
 }

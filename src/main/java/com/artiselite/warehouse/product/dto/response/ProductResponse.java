@@ -1,4 +1,4 @@
-package com.artiselite.warehouse.product.dto;
+package com.artiselite.warehouse.product.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
