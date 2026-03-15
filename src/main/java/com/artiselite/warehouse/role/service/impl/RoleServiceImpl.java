@@ -1,6 +1,6 @@
 package com.artiselite.warehouse.role.service.impl;
 
-import com.artiselite.warehouse.exception.ResourceNotFoundException;
+import com.artiselite.warehouse.exception.BadRequestException;
 import com.artiselite.warehouse.role.dto.RoleResponse;
 import com.artiselite.warehouse.role.entity.Role;
 import com.artiselite.warehouse.role.repository.RoleRepository;
@@ -26,7 +26,20 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getRequiredRole(String name) {
-        return roleRepository.findByNameIgnoreCase(name)
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found: " + name));
+        String normalizedRoleName = normalizeRoleName(name);
+        return roleRepository.findByNameIgnoreCase(normalizedRoleName)
+                .orElseThrow(() -> new BadRequestException("Invalid role: " + name + ". Allowed values: MANAGER, OPERATOR."));
+    }
+
+    private String normalizeRoleName(String name) {
+        if (name == null) {
+            throw new BadRequestException("roleName must be MANAGER or OPERATOR.");
+        }
+
+        String normalized = name.trim().toUpperCase();
+        if (!"MANAGER".equals(normalized) && !"OPERATOR".equals(normalized)) {
+            throw new BadRequestException("roleName must be MANAGER or OPERATOR.");
+        }
+        return normalized;
     }
 }

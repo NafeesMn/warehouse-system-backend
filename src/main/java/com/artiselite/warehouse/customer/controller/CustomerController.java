@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/customers")
+@PreAuthorize("hasRole('MANAGER')")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -36,13 +37,11 @@ public class CustomerController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('MANAGER')")
     public ApiResponse<CustomerResponse> createCustomer(@Valid @RequestBody CustomerRequest request) {
         return ApiResponse.success("Customer created successfully.", customerService.createCustomer(request));
     }
 
     @PutMapping("/{customerId}")
-    @PreAuthorize("hasRole('MANAGER')")
     public ApiResponse<CustomerResponse> updateCustomer(
             @PathVariable Long customerId,
             @Valid @RequestBody CustomerRequest request

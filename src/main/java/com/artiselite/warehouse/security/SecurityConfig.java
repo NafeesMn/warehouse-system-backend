@@ -24,13 +24,19 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomUserDetailsService customUserDetailsService;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final RestAccessDeniedHandler restAccessDeniedHandler;
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
-            CustomUserDetailsService customUserDetailsService
+            CustomUserDetailsService customUserDetailsService,
+            RestAuthenticationEntryPoint restAuthenticationEntryPoint,
+            RestAccessDeniedHandler restAccessDeniedHandler
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.customUserDetailsService = customUserDetailsService;
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+        this.restAccessDeniedHandler = restAccessDeniedHandler;
     }
 
     @Bean
@@ -39,19 +45,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(restAuthenticationEntryPoint)
+                        .accessDeniedHandler(restAccessDeniedHandler)
+                )
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers("/actuator/health", "/error").permitAll()
-                        .requestMatchers("/api/users/**").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/suppliers/**", "/api/customers/**")
+                        .requestMatchers("/api/me/**", "/api/auth/me").authenticated()
+                        .requestMatchers("/api/inbounds/**", "/api/outbounds/**").hasAnyRole("MANAGER", "OPERATOR")
+                        .requestMatchers("/api/users/**", "/api/products/**", "/api/suppliers/**", "/api/customers/**", "/api/dashboard/**")
                         .hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/suppliers/**", "/api/customers/**")
-                        .hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.GET, "/api/products/**", "/api/suppliers/**", "/api/customers/**")
-                        .hasAnyRole("MANAGER", "OPERATOR")
-                        .requestMatchers("/api/inbounds/**", "/api/outbounds/**", "/api/dashboard/**", "/api/auth/me")
-                        .hasAnyRole("MANAGER", "OPERATOR")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

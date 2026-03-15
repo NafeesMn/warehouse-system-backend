@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/suppliers")
+@PreAuthorize("hasRole('MANAGER')")
 public class SupplierController {
 
     private final SupplierService supplierService;
@@ -36,13 +37,11 @@ public class SupplierController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('MANAGER')")
     public ApiResponse<SupplierResponse> createSupplier(@Valid @RequestBody CreateSupplierRequest request) {
         return ApiResponse.success("Supplier created successfully.", supplierService.createSupplier(request));
     }
 
     @PutMapping("/{supplierId}")
-    @PreAuthorize("hasRole('MANAGER')")
     public ApiResponse<SupplierResponse> updateSupplier(
             @PathVariable Long supplierId,
             @Valid @RequestBody CreateSupplierRequest request

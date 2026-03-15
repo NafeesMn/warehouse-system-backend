@@ -1,14 +1,13 @@
-package com.artiselite.warehouse.user.dto;
+package com.artiselite.warehouse.user.dto.response;
 
 import java.time.LocalDateTime;
 
-public record UserResponse(
+public record MyProfileResponse(
         Long userId,
         String fullName,
         String email,
-        boolean active,
-        Long roleId,
         String roleName,
+        boolean isActive,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/products")
+@PreAuthorize("hasRole('MANAGER')")
 public class ProductController {
 
     private final ProductService productService;
@@ -29,7 +30,6 @@ public class ProductController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('MANAGER')")
     public ApiResponse<ProductResponse> createProduct(@Valid @RequestBody CreateProductRequest request) {
         return ApiResponse.success("Product created successfully.", productService.createProduct(request));
     }
@@ -68,7 +68,6 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    @PreAuthorize("hasRole('MANAGER')")
     public ApiResponse<ProductResponse> updateProduct(
             @PathVariable Long productId,
             @Valid @RequestBody UpdateProductRequest request
