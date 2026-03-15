@@ -27,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             select u
             from User u
             join u.role r
-            where (:roleName is null or upper(r.name) = upper(:roleName))
+            where (:roleName is null or r.name = :roleName)
               and (:isActive is null or u.isActive = :isActive)
             """)
     Page<User> findAllByFilters(

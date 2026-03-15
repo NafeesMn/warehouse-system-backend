@@ -3,6 +3,7 @@ package com.artiselite.warehouse.inbound.controller;
 import com.artiselite.warehouse.common.api.ApiResponse;
 import com.artiselite.warehouse.common.api.PagedResponse;
 import com.artiselite.warehouse.inbound.dto.request.CreateInboundRequest;
+import com.artiselite.warehouse.inbound.dto.response.InboundFormOptionsResponse;
 import com.artiselite.warehouse.inbound.dto.response.InboundListItemResponse;
 import com.artiselite.warehouse.inbound.dto.response.InboundResponse;
 import com.artiselite.warehouse.inbound.service.InboundService;
@@ -50,6 +51,14 @@ public class InboundController {
         return ApiResponse.success(
                 "Inbound transactions loaded successfully.",
                 inboundService.getInbounds(productId, supplierId, page, size, sortDirection)
+        );
+    }
+
+    @GetMapping("/options")
+    public ApiResponse<InboundFormOptionsResponse> getInboundFormOptions() {
+        return ApiResponse.success(
+                "Inbound form options loaded successfully.",
+                inboundService.getInboundFormOptions()
         );
     }
 

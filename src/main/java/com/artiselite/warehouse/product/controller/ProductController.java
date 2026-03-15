@@ -4,8 +4,10 @@ import com.artiselite.warehouse.common.api.ApiResponse;
 import com.artiselite.warehouse.common.api.PagedResponse;
 import com.artiselite.warehouse.product.dto.request.CreateProductRequest;
 import com.artiselite.warehouse.product.dto.request.UpdateProductRequest;
+import com.artiselite.warehouse.product.dto.response.ProductImportResponse;
 import com.artiselite.warehouse.product.dto.response.ProductListItemResponse;
 import com.artiselite.warehouse.product.dto.response.ProductResponse;
+import com.artiselite.warehouse.product.service.ProductImportService;
 import com.artiselite.warehouse.product.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/products")
@@ -24,14 +27,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductImportService productImportService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductImportService productImportService) {
         this.productService = productService;
+        this.productImportService = productImportService;
     }
 
     @PostMapping
     public ApiResponse<ProductResponse> createProduct(@Valid @RequestBody CreateProductRequest request) {
         return ApiResponse.success("Product created successfully.", productService.createProduct(request));
+    }
+
+    @PostMapping("/import")
+    public ApiResponse<ProductImportResponse> importProducts(@RequestParam("file") MultipartFile file) {
+        return ApiResponse.success(
+                "Products imported successfully.",
+                productImportService.importProducts(file)
+        );
     }
 
     @GetMapping

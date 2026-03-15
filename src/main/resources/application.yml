@@ -30,6 +30,8 @@ app:
       issuer: artiselite-warehouse
       secret: ${APP_JWT_SECRET:YXJ0aXNlbGl0ZS13YXJlaG91c2Utand0LXNlY3JldC1rZXktZm9yLWxvY2FsLWRldmVsb3BtZW50LTAx}
       expiration-minutes: ${APP_JWT_EXPIRATION_MINUTES:120}
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173}
   seed:
     manager-email: ${APP_SEED_MANAGER_EMAIL:manager@artiselite.local}
     manager-password: ${APP_SEED_MANAGER_PASSWORD:Manager@123}

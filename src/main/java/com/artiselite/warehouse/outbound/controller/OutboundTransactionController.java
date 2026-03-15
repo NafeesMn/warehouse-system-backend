@@ -3,6 +3,7 @@ package com.artiselite.warehouse.outbound.controller;
 import com.artiselite.warehouse.common.api.ApiResponse;
 import com.artiselite.warehouse.outbound.dto.OutboundTransactionRequest;
 import com.artiselite.warehouse.outbound.dto.OutboundTransactionResponse;
+import com.artiselite.warehouse.outbound.dto.response.OutboundFormOptionsResponse;
 import com.artiselite.warehouse.outbound.service.OutboundTransactionService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -31,6 +32,14 @@ public class OutboundTransactionController {
         return ApiResponse.success(
                 "Outbound transactions loaded successfully.",
                 outboundTransactionService.getAllOutboundTransactions()
+        );
+    }
+
+    @GetMapping("/options")
+    public ApiResponse<OutboundFormOptionsResponse> getOutboundFormOptions() {
+        return ApiResponse.success(
+                "Outbound form options loaded successfully.",
+                outboundTransactionService.getOutboundFormOptions()
         );
     }
 

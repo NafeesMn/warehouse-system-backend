@@ -1,9 +1,12 @@
 package com.artiselite.warehouse.inbound.service.impl;
 
 import com.artiselite.warehouse.common.api.PagedResponse;
+import com.artiselite.warehouse.common.dto.ProductReferenceOptionResponse;
+import com.artiselite.warehouse.common.dto.ReferenceOptionResponse;
 import com.artiselite.warehouse.exception.BadRequestException;
 import com.artiselite.warehouse.exception.ResourceNotFoundException;
 import com.artiselite.warehouse.inbound.dto.request.CreateInboundRequest;
+import com.artiselite.warehouse.inbound.dto.response.InboundFormOptionsResponse;
 import com.artiselite.warehouse.inbound.dto.response.InboundListItemResponse;
 import com.artiselite.warehouse.inbound.dto.response.InboundResponse;
 import com.artiselite.warehouse.inbound.entity.InboundTransaction;
@@ -16,6 +19,7 @@ import com.artiselite.warehouse.supplier.entity.Supplier;
 import com.artiselite.warehouse.supplier.repository.SupplierRepository;
 import com.artiselite.warehouse.user.entity.User;
 import com.artiselite.warehouse.user.repository.UserRepository;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -97,6 +101,29 @@ public class InboundServiceImpl implements InboundService {
                 .findAllByFilters(productId, supplierId, pageable)
                 .map(inboundMapper::toListItemResponse);
         return PagedResponse.from(result);
+    }
+
+    @Override
+    public InboundFormOptionsResponse getInboundFormOptions() {
+        List<ProductReferenceOptionResponse> productOptions = productRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))
+                .stream()
+                .map(product -> new ProductReferenceOptionResponse(
+                        product.getProductId(),
+                        product.getSku(),
+                        product.getName(),
+                        product.getCurrentStock()
+                ))
+                .toList();
+
+        List<ReferenceOptionResponse> supplierOptions = supplierRepository.findAllByOrderBySupplierNameAsc().stream()
+                .map(supplier -> new ReferenceOptionResponse(
+                        supplier.getSupplierId(),
+                        supplier.getSupplierName(),
+                        supplier.getContactPerson()
+                ))
+                .toList();
+
+        return new InboundFormOptionsResponse(productOptions, supplierOptions);
     }
 
     @Override

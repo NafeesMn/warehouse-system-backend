@@ -2,7 +2,6 @@ package com.artiselite.warehouse.security;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,11 +21,11 @@ import com.artiselite.warehouse.outbound.dto.OutboundTransactionResponse;
 import com.artiselite.warehouse.outbound.service.OutboundTransactionService;
 import com.artiselite.warehouse.product.controller.ProductController;
 import com.artiselite.warehouse.product.dto.response.ProductListItemResponse;
+import com.artiselite.warehouse.product.service.ProductImportService;
 import com.artiselite.warehouse.product.service.ProductService;
 import com.artiselite.warehouse.user.controller.MyProfileController;
 import com.artiselite.warehouse.user.controller.UserController;
 import com.artiselite.warehouse.user.dto.response.MyProfileResponse;
-import com.artiselite.warehouse.user.dto.response.UserListItemResponse;
 import com.artiselite.warehouse.user.service.UserService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,6 +69,9 @@ class AccessControlWebMvcTest {
 
     @MockBean
     private ProductService productService;
+
+    @MockBean
+    private ProductImportService productImportService;
 
     @MockBean
     private DashboardService dashboardService;
