@@ -1,10 +1,11 @@
-package com.artiselite.warehouse.inbound.dto;
+package com.artiselite.warehouse.inbound.dto.response;
 
 import java.time.LocalDateTime;
 
-public record InboundTransactionResponse(
+public record InboundResponse(
         Long inboundId,
         Long productId,
+        String productSku,
         String productName,
         Long supplierId,
         String supplierName,
@@ -12,8 +13,9 @@ public record InboundTransactionResponse(
         LocalDateTime receivedDate,
         String referenceNo,
         String remarks,
-        Long createdById,
+        Long createdBy,
         String createdByName,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        Integer stockAfterUpdate
 ) {
 }

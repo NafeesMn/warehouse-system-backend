@@ -1,4 +1,4 @@
-package com.artiselite.warehouse.supplier.dto;
+package com.artiselite.warehouse.supplier.dto.response;
 
 import java.time.LocalDateTime;
 

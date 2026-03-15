@@ -1,8 +1,8 @@
 package com.artiselite.warehouse.supplier.controller;
 
 import com.artiselite.warehouse.common.api.ApiResponse;
-import com.artiselite.warehouse.supplier.dto.SupplierRequest;
-import com.artiselite.warehouse.supplier.dto.SupplierResponse;
+import com.artiselite.warehouse.supplier.dto.request.CreateSupplierRequest;
+import com.artiselite.warehouse.supplier.dto.response.SupplierResponse;
 import com.artiselite.warehouse.supplier.service.SupplierService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -37,7 +37,7 @@ public class SupplierController {
 
     @PostMapping
     @PreAuthorize("hasRole('MANAGER')")
-    public ApiResponse<SupplierResponse> createSupplier(@Valid @RequestBody SupplierRequest request) {
+    public ApiResponse<SupplierResponse> createSupplier(@Valid @RequestBody CreateSupplierRequest request) {
         return ApiResponse.success("Supplier created successfully.", supplierService.createSupplier(request));
     }
 
@@ -45,7 +45,7 @@ public class SupplierController {
     @PreAuthorize("hasRole('MANAGER')")
     public ApiResponse<SupplierResponse> updateSupplier(
             @PathVariable Long supplierId,
-            @Valid @RequestBody SupplierRequest request
+            @Valid @RequestBody CreateSupplierRequest request
     ) {
         return ApiResponse.success(
                 "Supplier updated successfully.",

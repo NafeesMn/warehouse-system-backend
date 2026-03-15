@@ -56,6 +56,9 @@ public class InboundTransaction {
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
 
+    @Column(name = "stock_after_update", nullable = false)
+    private Integer stockAfterUpdate;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
